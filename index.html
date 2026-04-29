@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Adil Gasimov</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111111;
+  --bg3:#181818;
+  --line:#222222;
+  --text:#f0f0ee;
+  --muted:#666662;
+  --dim:#3a3a38;
+  --gold:#c9a227;
+  --gold-lt:rgba(201,162,39,0.1);
+  --gold-br:rgba(201,162,39,0.3);
+  --sans:'Inter',system-ui,sans-serif;
+  --display:'Syne',sans-serif;
+  --sb:260px;
+  --nav-h:56px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-size:15px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{text-decoration:none}
+::selection{background:var(--gold);color:#000}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--dim)}
+
+/* ════════════════════════════════
+   SIDEBAR  (desktop only)
+════════════════════════════════ */
+#sidebar{
+  width:var(--sb);position:fixed;
+  top:0;left:0;bottom:0;z-index:100;
+  background:var(--bg);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:3rem 2.5rem;
+  transition:transform 0.35s ease;
+}
+.sb-logo{
+  font-family:var(--display);font-size:1.05rem;font-weight:700;
+  color:var(--text);letter-spacing:0.04em;display:block;margin-bottom:2.75rem;
+}
+.sb-logo span{color:var(--gold)}
+nav ul{list-style:none;display:flex;flex-direction:column;gap:0}
+nav a{
+  display:flex;align-items:center;gap:0.75rem;
+  font-size:0.77rem;font-weight:500;letter-spacing:0.07em;
+  text-transform:uppercase;color:var(--muted);
+  padding:0.55rem 0;position:relative;transition:color 0.2s;
+}
+.nav-num{font-family:var(--display);font-size:0.58rem;color:var(--dim);transition:color 0.2s}
+nav a:hover,nav a.active{color:var(--text)}
+nav a:hover .nav-num,nav a.active .nav-num{color:var(--gold)}
+nav a.active::before{
+  content:'';position:absolute;left:-2.5rem;top:50%;
+  transform:translateY(-50%);width:1.25rem;height:1px;background:var(--gold);
+}
+.sb-foot{font-size:0.7rem}
+.sb-email{color:var(--muted);display:block;margin-bottom:1rem;word-break:break-all;transition:color 0.2s}
+.sb-email:hover{color:var(--text)}
+.sb-li{font-size:0.67rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);transition:color 0.2s}
+.sb-li:hover{color:var(--gold)}
+
+/* ════════════════════════════════
+   MOBILE NAV BAR
+════════════════════════════════ */
+#topbar{
+  display:none;
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--nav-h);
+  background:rgba(10,10,10,0.97);border-bottom:1px solid var(--line);
+  backdrop-filter:blur(12px);
+  align-items:center;justify-content:space-between;
+  padding:0 1.25rem;
+}
+#topbar-logo{
+  font-family:var(--display);font-size:1rem;font-weight:700;
+  color:var(--text);letter-spacing:0.04em;
+}
+#topbar-logo span{color:var(--gold)}
+#burger{
+  background:none;border:none;cursor:pointer;
+  display:flex;flex-direction:column;gap:5px;padding:4px;
+}
+#burger span{
+  display:block;width:22px;height:1.5px;background:var(--text);
+  transition:transform 0.3s,opacity 0.3s;
+}
+#burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+#burger.open span:nth-child(2){opacity:0}
+#burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile full-screen nav drawer */
+#nav-drawer{
+  display:none;
+  position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
+  background:var(--bg);z-index:190;
+  flex-direction:column;justify-content:center;
+  padding:2.5rem 2rem;
+  overflow-y:auto;
+}
+#nav-drawer.open{display:flex}
+#nav-drawer ul{list-style:none;display:flex;flex-direction:column;gap:0}
+#nav-drawer a{
+  display:flex;align-items:center;gap:1rem;
+  font-family:var(--display);font-size:1.5rem;font-weight:700;
+  color:var(--muted);padding:1rem 0;
+  border-bottom:1px solid var(--line);letter-spacing:-0.01em;
+  transition:color 0.2s;
+}
+#nav-drawer a:last-child{border-bottom:none}
+#nav-drawer a:hover,#nav-drawer a.active{color:var(--text)}
+#nav-drawer .dn{font-size:0.65rem;color:var(--dim);font-family:var(--sans);font-weight:400;letter-spacing:0.1em;text-transform:uppercase}
+.drawer-foot{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--line)}
+.drawer-email{font-size:0.82rem;color:var(--muted);display:block;margin-bottom:0.75rem}
+.drawer-li{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)}
+
+/* ════════════════════════════════
+   MAIN CONTENT
+════════════════════════════════ */
+#main{margin-left:var(--sb);min-height:100vh}
+
+/* ── Section base ── */
+.sec{
+  padding:6rem 5rem;
+  border-bottom:1px solid var(--line);
+  max-width:860px;
+}
+.sec:last-child{border-bottom:none}
+
+/* ── Section label + title ── */
+.s-label{
+  display:flex;align-items:center;gap:0.6rem;
+  font-size:0.63rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.85rem;
+}
+.s-num{font-family:var(--display);font-size:0.58rem;color:var(--dim)}
+.s-title{
+  font-family:var(--display);
+  font-size:clamp(2rem,3.5vw,3.2rem);
+  font-weight:800;line-height:1.05;letter-spacing:-0.02em;
+  color:var(--text);margin-bottom:2.75rem;
+}
+.s-title em{font-style:normal;color:var(--gold)}
+
+/* ════════════════════════════════
+   HERO
+════════════════════════════════ */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding:5rem 5rem 4rem;max-width:none;
+  border-bottom:1px solid var(--line);position:relative;
+}
+.hero-status{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-size:0.68rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2.5rem;
+}
+.hero-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--gold);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
+.hero-name{
+  font-family:var(--display);
+  font-size:clamp(3rem,5.5vw,5.5rem);
+  font-weight:800;line-height:0.94;letter-spacing:-0.03em;
+  color:var(--text);margin-bottom:2.25rem;
+}
+.hero-name span{
+  display:block;color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.18);
+}
+.hero-sub{
+  max-width:420px;font-size:1rem;font-weight:300;
+  color:var(--muted);line-height:1.82;margin-bottom:2.5rem;
+}
+.hero-sub strong{color:var(--text);font-weight:400}
+.hero-tags{display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:2.5rem}
+.htag{
+  font-size:0.67rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;
+  padding:0.3rem 0.8rem;border:1px solid var(--line);color:var(--muted);transition:all 0.2s;
+}
+.htag:hover{border-color:var(--gold-br);color:var(--gold)}
+.btns{display:flex;gap:0.65rem;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.72rem 1.5rem;transition:all 0.2s;
+}
+.btn-fill{background:var(--gold);color:#000;border:1px solid var(--gold)}
+.btn-fill:hover{background:transparent;color:var(--gold)}
+.btn-ghost{border:1px solid var(--line);color:var(--muted)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.25);color:var(--text)}
+.hero-scroll{
+  position:absolute;bottom:3rem;right:5rem;
+  writing-mode:vertical-lr;
+  display:flex;align-items:center;gap:0.5rem;
+  font-size:0.6rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);
+}
+.hero-scroll-line{
+  width:1px;height:2.5rem;background:var(--dim);
+  animation:sd 1.8s ease-in-out infinite;
+}
+@keyframes sd{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ════════════════════════════════
+   ABOUT
+════════════════════════════════ */
+.about-text p{font-size:0.92rem;color:var(--muted);line-height:1.9;margin-bottom:0.95rem}
+.about-text p strong{color:var(--text);font-weight:400}
+.edu-box{
+  margin-top:1.75rem;padding:1.25rem 1.5rem;
+  border:1px solid var(--line);border-left:2px solid var(--gold);
+}
+.edu-deg{font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:0.3rem}
+.edu-uni{font-size:0.73rem;color:var(--muted);margin-bottom:0.2rem}
+.edu-date{font-size:0.68rem;color:var(--gold);letter-spacing:0.04em;font-family:var(--display)}
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);margin-top:3rem;
+}
+.stat{padding:1.75rem 1.25rem;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat-v{
+  font-family:var(--display);font-size:2.6rem;font-weight:800;
+  color:var(--text);line-height:1;margin-bottom:0.4rem;letter-spacing:-0.02em;
+}
+.stat-v em{font-style:normal;color:var(--gold)}
+.stat-l{font-size:0.68rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);line-height:1.5}
+
+/* ════════════════════════════════
+   EXPERIENCE
+════════════════════════════════ */
+.exp-item{
+  display:grid;grid-template-columns:155px 1fr;
+  gap:2.5rem;padding:2.25rem 0;
+  border-top:1px solid var(--line);
+}
+.exp-item:last-child{border-bottom:1px solid var(--line)}
+.exp-period{font-size:0.68rem;color:var(--muted);margin-bottom:0.35rem;letter-spacing:0.03em}
+.exp-co{font-size:0.86rem;font-weight:600;color:var(--text);margin-bottom:0.2rem}
+.exp-kind{font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)}
+.exp-role{
+  font-family:var(--display);font-size:1.1rem;font-weight:700;
+  color:var(--text);margin-bottom:0.75rem;line-height:1.2;
+}
+.exp-hl{list-style:none;margin-bottom:0.9rem}
+.exp-hl li{
+  font-size:0.84rem;color:var(--muted);line-height:1.8;
+  padding:0.15rem 0 0.15rem 1.1rem;position:relative;
+}
+.exp-hl li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:0.68rem;top:0.28rem}
+.exp-hl li strong{color:var(--text);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:0.35rem}
+.chip{
+  font-size:0.63rem;font-weight:500;letter-spacing:0.04em;
+  padding:0.18rem 0.6rem;background:var(--bg3);color:var(--muted);
+  border:1px solid var(--line);transition:all 0.15s;
+}
+.chip:hover{border-color:var(--gold-br);color:var(--gold);background:var(--gold-lt)}
+
+/* ════════════════════════════════
+   PROJECTS
+════════════════════════════════ */
+.proj-list{display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.proj-item{
+  background:var(--bg);padding:2.25rem 2.5rem;
+  display:grid;grid-template-columns:1fr 48px;gap:1.5rem;align-items:start;
+  transition:background 0.2s;color:inherit;position:relative;overflow:hidden;
+}
+.proj-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--gold);transform:scaleY(0);transform-origin:top;transition:transform 0.3s;
+}
+.proj-item:hover{background:var(--bg3)}
+.proj-item:hover::before{transform:scaleY(1)}
+.proj-cat{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
+.proj-name{
+  font-family:var(--display);font-size:1.4rem;font-weight:700;
+  color:var(--text);margin-bottom:0.6rem;line-height:1.15;
+}
+.proj-desc{font-size:0.84rem;color:var(--muted);line-height:1.75;margin-bottom:0.9rem;max-width:500px}
+.proj-desc strong{color:var(--text);font-weight:400}
+.proj-arrow{
+  font-size:1.4rem;color:var(--dim);transition:all 0.2s;
+  display:flex;align-items:flex-start;justify-content:flex-end;padding-top:0.2rem;
+}
+.proj-item:hover .proj-arrow{color:var(--gold);transform:translate(3px,-3px)}
+
+/* ════════════════════════════════
+   SKILLS
+════════════════════════════════ */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+.sk-head{
+  font-size:0.67rem;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;
+  color:var(--dim);padding-bottom:0.65rem;border-bottom:1px solid var(--line);margin-bottom:0.85rem;
+}
+.sk-pills{display:flex;flex-wrap:wrap;gap:0.35rem}
+.spill{
+  font-size:0.78rem;color:var(--muted);padding:0.28rem 0.75rem;
+  border:1px solid var(--line);transition:all 0.15s;
+}
+.spill:hover{border-color:var(--gold-br);color:var(--gold);background:var(--gold-lt)}
+.cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:3rem;padding-top:3rem;border-top:1px solid var(--line)}
+.cl-head{font-size:0.67rem;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;color:var(--dim);padding-bottom:0.65rem;border-bottom:1px solid var(--line);margin-bottom:0.85rem}
+.cert-row{display:flex;align-items:flex-start;gap:0.7rem;padding:0.75rem 0;border-bottom:1px solid var(--line)}
+.cert-row:last-child{border-bottom:none;padding-bottom:0}
+.cert-ico{
+  width:30px;height:30px;flex-shrink:0;
+  background:var(--gold-lt);border:1px solid var(--gold-br);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.58rem;font-weight:600;color:var(--gold);font-family:var(--display);
+}
+.cert-name{font-size:0.82rem;font-weight:500;color:var(--text);line-height:1.4}
+.cert-by{font-size:0.68rem;color:var(--muted);margin-top:0.1rem}
+.lang-row{display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--line)}
+.lang-row:last-child{border-bottom:none;padding-bottom:0}
+.lang-n{font-size:0.84rem;color:var(--text)}
+.lang-lv{font-size:0.62rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
+.lv-n{color:var(--gold)}.lv-f{color:#4ade80}.lv-l{color:var(--muted)}
+
+/* ════════════════════════════════
+   GLOBAL
+════════════════════════════════ */
+.global-list{display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.gc{
+  background:var(--bg);padding:1.75rem 2.5rem;
+  display:grid;grid-template-columns:160px 1fr;gap:2.5rem;transition:background 0.2s;
+}
+.gc:hover{background:var(--bg3)}
+.gc-loc{font-size:0.63rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:0.25rem}
+.gc-type{font-size:0.7rem;color:var(--muted)}
+.gc-title{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.45rem;line-height:1.4}
+.gc-desc{font-size:0.8rem;color:var(--muted);line-height:1.75}
+.gc-desc strong{color:var(--text);font-weight:400}
+
+/* ════════════════════════════════
+   CONTACT
+════════════════════════════════ */
+#contact{padding:6rem 5rem;max-width:none;border-bottom:none}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;max-width:860px}
+.c-big{
+  font-family:var(--display);
+  font-size:clamp(2.5rem,4.5vw,4.5rem);
+  font-weight:800;line-height:1;letter-spacing:-0.03em;
+  color:var(--text);margin-bottom:1.25rem;
+}
+.c-big em{font-style:normal;color:var(--gold)}
+.c-sub{font-size:0.9rem;color:var(--muted);line-height:1.85;margin-bottom:2rem;max-width:320px}
+.c-rows{display:flex;flex-direction:column;gap:0}
+.c-row{
+  display:flex;align-items:center;gap:0.9rem;
+  padding:1.1rem;border:1px solid var(--line);margin-bottom:-1px;
+  transition:border-color 0.2s;
+}
+.c-row:hover{border-color:var(--gold-br);z-index:1;position:relative}
+.c-ico{
+  width:34px;height:34px;flex-shrink:0;background:var(--bg3);
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:0.8rem;
+}
+.c-type{font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.1rem}
+.c-val{font-size:0.84rem;color:var(--text)}
+.c-val a{color:var(--gold)}
+.c-val a:hover{text-decoration:underline}
+
+/* ════════════════════════════════
+   FOOTER
+════════════════════════════════ */
+footer{
+  margin-left:var(--sb);padding:1.25rem 5rem;
+  border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.f-t{font-size:0.67rem;color:var(--muted);letter-spacing:0.04em}
+
+/* ════════════════════════════════
+   FADE IN
+════════════════════════════════ */
+.fi{opacity:0;transform:translateY(14px);transition:opacity 0.5s ease,transform 0.5s ease}
+.fi.in{opacity:1;transform:none}
+.fi-d1{transition-delay:0.1s}.fi-d2{transition-delay:0.2s}
+
+/* ════════════════════════════════
+   TABLET  768–1024
+════════════════════════════════ */
+@media(max-width:1024px){
+  :root{--sb:210px}
+  .sec,#hero,#contact{padding:5rem 3rem}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(3){border-right:1px solid var(--line)}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--line)}
+}
+
+/* ════════════════════════════════
+   MOBILE  ≤ 767
+════════════════════════════════ */
+@media(max-width:767px){
+
+  /* Hide desktop sidebar, show mobile topbar */
+  #sidebar{display:none}
+  #topbar{display:flex}
+  #main{margin-left:0;padding-top:var(--nav-h)}
+  footer{margin-left:0}
+
+  /* ── Sections ── */
+  .sec{padding:3rem 1.25rem;max-width:100%}
+  #hero{padding:3rem 1.25rem 2.5rem;min-height:calc(100vh - var(--nav-h))}
+  #contact{padding:3rem 1.25rem}
+  footer{padding:1.25rem}
+
+  /* ── Hero ── */
+  .hero-status{margin-bottom:1.5rem;font-size:0.62rem}
+  .hero-name{font-size:clamp(2.8rem,12vw,4.5rem);margin-bottom:1.5rem;line-height:0.9}
+  .hero-sub{font-size:0.93rem;max-width:100%;margin-bottom:1.75rem;line-height:1.75}
+  .hero-tags{margin-bottom:1.75rem;gap:0.4rem}
+  .htag{font-size:0.62rem;padding:0.28rem 0.7rem}
+  .btns{flex-direction:column;gap:0.5rem}
+  .btn{justify-content:center;padding:0.85rem 1rem;font-size:0.7rem}
+  .hero-scroll{display:none}
+
+  /* ── Section titles ── */
+  .s-title{font-size:clamp(1.8rem,8vw,2.5rem);margin-bottom:2rem}
+
+  /* ── Stats: 2×2 grid ── */
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{padding:1.25rem 1rem;border-right:none;border-bottom:1px solid var(--line)}
+  .stat:nth-child(odd){border-right:1px solid var(--line)}
+  .stat:nth-child(3),.stat:nth-child(4){border-bottom:none;border-top:none}
+  .stat-v{font-size:2rem}
+  .stat-l{font-size:0.62rem}
+
+  /* ── About ── */
+  .about-text p{font-size:0.9rem}
+  .edu-box{margin-top:1.5rem}
+
+  /* ── Experience ── */
+  .exp-item{
+    grid-template-columns:1fr;gap:0.6rem;padding:1.75rem 0;
+  }
+  .exp-meta-row{display:flex;flex-wrap:wrap;gap:0.3rem 0.75rem;align-items:center;margin-bottom:0.5rem}
+  .exp-hl li{font-size:0.82rem}
+
+  /* ── Projects ── */
+  .proj-item{grid-template-columns:1fr;padding:1.5rem 1.25rem}
+  .proj-arrow{display:none}
+  .proj-name{font-size:1.2rem}
+  .proj-desc{max-width:100%;font-size:0.82rem}
+
+  /* ── Skills ── */
+  .skills-grid{grid-template-columns:1fr;gap:2rem}
+  .cl-grid{grid-template-columns:1fr;gap:2rem;margin-top:2.25rem;padding-top:2.25rem}
+
+  /* ── Global ── */
+  .gc{grid-template-columns:1fr;padding:1.5rem 1.25rem;gap:0.4rem}
+  .gc-meta{display:flex;gap:0.75rem;align-items:center}
+  .gc-type::before{content:'·';margin-right:0.5rem;color:var(--dim)}
+
+  /* ── Contact ── */
+  .contact-wrap{grid-template-columns:1fr;gap:2.5rem}
+  .c-big{font-size:clamp(2.2rem,10vw,3.2rem)}
+  .c-sub{max-width:100%;font-size:0.88rem}
+  .btns.contact-btns{flex-direction:column}
+
+  /* ── Footer ── */
+  footer{flex-direction:column;gap:0.3rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ DESKTOP SIDEBAR ═══ -->
+<aside id="sidebar">
+  <div>
+    <a class="sb-logo" href="#hero">Adil<span>.</span></a>
+    <nav id="desk-nav">
+      <ul>
+        <li><a href="#about"><span class="nav-num">01</span>About</a></li>
+        <li><a href="#experience"><span class="nav-num">02</span>Experience</a></li>
+        <li><a href="#projects"><span class="nav-num">03</span>Projects</a></li>
+        <li><a href="#skills"><span class="nav-num">04</span>Skills</a></li>
+        <li><a href="#global"><span class="nav-num">05</span>Global</a></li>
+        <li><a href="#contact"><span class="nav-num">06</span>Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="sb-foot">
+    <a class="sb-email" href="mailto:qasimov.adil28@gmail.com">qasimov.adil28@gmail.com</a>
+    <a class="sb-li" href="https://linkedin.com/in/AdilGasimov" target="_blank">LinkedIn ↗</a>
+  </div>
+</aside>
+
+<!-- ═══ MOBILE TOPBAR ═══ -->
+<div id="topbar">
+  <span id="topbar-logo">Adil<span>.</span></span>
+  <button id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<!-- ═══ MOBILE NAV DRAWER ═══ -->
+<div id="nav-drawer">
+  <ul>
+    <li><a href="#about"><span class="dn">01</span>About</a></li>
+    <li><a href="#experience"><span class="dn">02</span>Experience</a></li>
+    <li><a href="#projects"><span class="dn">03</span>Projects</a></li>
+    <li><a href="#skills"><span class="dn">04</span>Skills</a></li>
+    <li><a href="#global"><span class="dn">05</span>Global</a></li>
+    <li><a href="#contact"><span class="dn">06</span>Contact</a></li>
+  </ul>
+  <div class="drawer-foot">
+    <a class="drawer-email" href="mailto:qasimov.adil28@gmail.com">qasimov.adil28@gmail.com</a>
+    <a class="drawer-li" href="https://linkedin.com/in/AdilGasimov" target="_blank">LinkedIn ↗</a>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div id="main">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-status"><span class="hero-dot"></span>Available for opportunities</div>
+    <h1 class="hero-name">Adil<span>Gasimov</span></h1>
+    <p class="hero-sub"><strong>Product Manager & Data Analyst</strong> — I translate raw data into decisions that drive growth, and build communities that create lasting impact.</p>
+    <div class="hero-tags">
+      <span class="htag">Power BI · PL-300</span>
+      <span class="htag">PSPO I</span>
+      <span class="htag">Product Management</span>
+      <span class="htag">Data Analytics</span>
+      <span class="htag">Community Building</span>
+    </div>
+    <div class="btns">
+      <a class="btn btn-fill" href="mailto:qasimov.adil28@gmail.com">Get in Touch →</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/AdilGasimov" target="_blank">LinkedIn</a>
+    </div>
+    <div class="hero-scroll"><div class="hero-scroll-line"></div>Scroll</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="sec">
+    <div class="s-label"><span class="s-num">01</span>About</div>
+    <h2 class="s-title">Data-driven.<br><em>Community-led.</em></h2>
+    <div class="about-text fi">
+      <p>I am a dual-degree IT student, completing studies across <strong>Baku Engineering University</strong> and <strong>Inha University, South Korea</strong>.</p>
+      <p>My work bridges two areas: <strong>analytical rigour</strong> — building Power BI dashboards, designing KPI frameworks, and making data tell a clear story — and <strong>community leadership</strong>, having organised EU-backed hackathons, led Azerbaijan's largest youth AI initiative, and managed cross-functional teams.</p>
+      <p>I hold a <strong>Microsoft PL-300</strong> certification and <strong>PSPO I</strong> from Scrum.org, and am co-founding ReTick, a ticketing startup currently in incubation.</p>
+      <div class="edu-box">
+        <div class="edu-deg">B.Eng. Information Technologies — Dual Diploma</div>
+        <div class="edu-uni">Baku Engineering University · Inha University (South Korea)</div>
+        <div class="edu-date">09.2022 — Present</div>
+      </div>
+    </div>
+    <div class="stats fi">
+      <div class="stat"><div class="stat-v">200<em>+</em></div><div class="stat-l">Teens in AI programme</div></div>
+      <div class="stat"><div class="stat-v">40<em>%</em></div><div class="stat-l">Brand visibility increase</div></div>
+      <div class="stat"><div class="stat-v">120<em>+</em></div><div class="stat-l">Hackathon applications</div></div>
+      <div class="stat"><div class="stat-v">13<em>+</em></div><div class="stat-l">Partner organisations</div></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="sec">
+    <div class="s-label"><span class="s-num">02</span>Experience</div>
+    <h2 class="s-title">Career <em>history</em></h2>
+    <div class="fi">
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-period">Present</div>
+          <div class="exp-co">Div Academy</div>
+          <div class="exp-kind">Full-time</div>
+        </div>
+        <div>
+          <div class="exp-role">Data Analyst</div>
+          <ul class="exp-hl">
+            <li>Drove a <strong>40% increase</strong> in brand visibility through content strategy optimisation via engagement data</li>
+            <li>Analysed newsletter metrics and member stories to refine community engagement and lead conversion</li>
+            <li>Established data-backed partnerships expanding member benefits and networking opportunities</li>
+            <li>Monitored KPIs and delivered actionable growth insights to senior leadership</li>
+          </ul>
+          <div class="chips"><span class="chip">Power BI</span><span class="chip">SQL</span><span class="chip">Python</span><span class="chip">KPI Design</span><span class="chip">Analytics</span></div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-period">Past</div>
+          <div class="exp-co">FIKIR MMC</div>
+          <div class="exp-kind">Full-time</div>
+        </div>
+        <div>
+          <div class="exp-role">Marketing & Product Manager</div>
+          <ul class="exp-hl">
+            <li>Led digital marketing strategy across channels, driving membership growth across multiple locations</li>
+            <li>Developed content marketing including social media, newsletters, and member success stories</li>
+            <li>Established strategic partnerships with local businesses creating networking value</li>
+          </ul>
+          <div class="chips"><span class="chip">Product Management</span><span class="chip">Marketing</span><span class="chip">Partnerships</span></div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-period">Present</div>
+          <div class="exp-co">EESTEC LC Baku</div>
+          <div class="exp-kind">Volunteer</div>
+        </div>
+        <div>
+          <div class="exp-role">Chairperson</div>
+          <ul class="exp-hl">
+            <li>Leading operations, strategic initiatives, and a volunteer team at EESTEC Baku branch</li>
+            <li>Organising events, building partnerships, and representing the chapter regionally</li>
+            <li>Facilitating professional development for engineering students</li>
+          </ul>
+          <div class="chips"><span class="chip">Leadership</span><span class="chip">Strategy</span><span class="chip">Events</span></div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-period">Past</div>
+          <div class="exp-co">JunctionX Baku</div>
+          <div class="exp-kind">Contract</div>
+        </div>
+        <div>
+          <div class="exp-role">Lead Organizer</div>
+          <ul class="exp-hl">
+            <li>Directed a core team of 10 across logistics, participant support, and coordination</li>
+            <li>Supported <strong>40 teams</strong> in real-time throughout the 48-hour hackathon</li>
+            <li>Implemented structured mentorship pairing industry experts with participants</li>
+          </ul>
+          <div class="chips"><span class="chip">Event Management</span><span class="chip">Team Leadership</span><span class="chip">Mentorship</span></div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-period">Past</div>
+          <div class="exp-co">Teens in AI</div>
+          <div class="exp-kind">Volunteer</div>
+        </div>
+        <div>
+          <div class="exp-role">Local Ambassador</div>
+          <ul class="exp-hl">
+            <li>Attracted <strong>200+ teenagers</strong> to a local AI education programme in Baku</li>
+            <li>Built <strong>13 partnerships</strong> with schools, tech companies, and community organisations</li>
+            <li>Organised AI workshops, hackathons, and educational events</li>
+          </ul>
+          <div class="chips"><span class="chip">AI Education</span><span class="chip">Youth Outreach</span><span class="chip">Partnerships</span></div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-period">Past</div>
+          <div class="exp-co">DigiEduHack Baku</div>
+          <div class="exp-kind">Contract</div>
+        </div>
+        <div>
+          <div class="exp-role">Lead Organizer — EU Commission</div>
+          <ul class="exp-hl">
+            <li>Led Azerbaijan's entry in a global hackathon by the <strong>European Commission</strong></li>
+            <li>Recruited <strong>12 mentors</strong> for <strong>70+ participants</strong>; secured 3 local sponsors</li>
+            <li><strong>120+ applications</strong>; 13 projects produced — winner represents Azerbaijan globally</li>
+          </ul>
+          <div class="chips"><span class="chip">EU Commission</span><span class="chip">EdTech</span><span class="chip">Sponsorship</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="sec">
+    <div class="s-label"><span class="s-num">03</span>Projects & Ventures</div>
+    <h2 class="s-title">Selected <em>work</em></h2>
+    <div class="proj-list fi">
+
+      <a class="proj-item" href="#">
+        <div>
+          <div class="proj-cat">Startup</div>
+          <div class="proj-name">ReTick</div>
+          <div class="proj-desc">Co-founded a ticketing startup. Graduated from <strong>Sabah.hub incubation</strong> and developed MVP. Currently in the <strong>Smart Solutions Incubation Programme</strong> by Khazar University & IDDA.</div>
+          <div class="chips"><span class="chip">Startup</span><span class="chip">Incubation</span><span class="chip">MVP</span><span class="chip">Product</span></div>
+        </div>
+        <div class="proj-arrow">↗</div>
+      </a>
+
+      <a class="proj-item" href="https://bit.ly/463K4lx" target="_blank">
+        <div>
+          <div class="proj-cat">Community / Global</div>
+          <div class="proj-name">DigiEduHack Baku 2023</div>
+          <div class="proj-desc">Organised Azerbaijan's entry into a <strong>European Commission global hackathon</strong>. 120+ applications, 13 digital education projects, 12 expert mentors. Winner represents Azerbaijan globally.</div>
+          <div class="chips"><span class="chip">EU Commission</span><span class="chip">EdTech</span><span class="chip">Global</span></div>
+        </div>
+        <div class="proj-arrow">↗</div>
+      </a>
+
+      <a class="proj-item" href="#">
+        <div>
+          <div class="proj-cat">Impact / Education</div>
+          <div class="proj-name">Teens in AI Baku</div>
+          <div class="proj-desc">Built a local AI education movement from scratch — <strong>200+ teen participants</strong>, 13 partner organisations, workshops, hackathons, and media representation across Baku.</div>
+          <div class="chips"><span class="chip">AI Education</span><span class="chip">Youth</span><span class="chip">Impact</span></div>
+        </div>
+        <div class="proj-arrow">↗</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="sec">
+    <div class="s-label"><span class="s-num">04</span>Skills & Credentials</div>
+    <h2 class="s-title">Technical <em>expertise</em></h2>
+    <div class="skills-grid fi">
+      <div>
+        <div class="sk-head">Analytics & Data</div>
+        <div class="sk-pills"><span class="spill">Power BI</span><span class="spill">SQL</span><span class="spill">Excel</span><span class="spill">DAX</span><span class="spill">Data Visualisation</span><span class="spill">KPI Design</span><span class="spill">Regression Analysis</span><span class="spill">Statistics</span></div>
+      </div>
+      <div>
+        <div class="sk-head">Engineering & Tools</div>
+        <div class="sk-pills"><span class="spill">Python</span><span class="spill">Generative AI</span><span class="spill">Google Vertex AI</span><span class="spill">MS Office</span><span class="spill">Trello</span></div>
+      </div>
+      <div>
+        <div class="sk-head">Product & Strategy</div>
+        <div class="sk-pills"><span class="spill">Product Ownership</span><span class="spill">Agile / Scrum</span><span class="spill">User Research</span><span class="spill">Market Research</span><span class="spill">Roadmapping</span><span class="spill">Stakeholder Management</span></div>
+      </div>
+      <div>
+        <div class="sk-head">Leadership & Operations</div>
+        <div class="sk-pills"><span class="spill">Community Building</span><span class="spill">Event Management</span><span class="spill">Public Speaking</span><span class="spill">Partnership Development</span><span class="spill">Team Coordination</span></div>
+      </div>
+    </div>
+    <div class="cl-grid fi">
+      <div>
+        <div class="cl-head">Certifications</div>
+        <div class="cert-row"><div class="cert-ico">MS</div><div><div class="cert-name">Power BI Data Analyst Associate (PL-300)</div><div class="cert-by">Microsoft Certified</div></div></div>
+        <div class="cert-row"><div class="cert-ico">PSO</div><div><div class="cert-name">Professional Scrum Product Owner I (PSPO I)</div><div class="cert-by">Scrum.org</div></div></div>
+        <div class="cert-row"><div class="cert-ico">PM</div><div><div class="cert-name">Product Management for AI & Data Science</div><div class="cert-by">Course Certificate</div></div></div>
+        <div class="cert-row"><div class="cert-ico">CP</div><div><div class="cert-name">Communication & Presentation for Analysts</div><div class="cert-by">Course Certificate</div></div></div>
+      </div>
+      <div>
+        <div class="cl-head">Languages</div>
+        <div class="lang-row"><span class="lang-n">Azerbaijani</span><span class="lang-lv lv-n">Native</span></div>
+        <div class="lang-row"><span class="lang-n">English</span><span class="lang-lv lv-f">Full Professional</span></div>
+        <div class="lang-row"><span class="lang-n">Russian</span><span class="lang-lv lv-f">Full Professional</span></div>
+        <div class="lang-row"><span class="lang-n">Korean</span><span class="lang-lv lv-l">Limited Working</span></div>
+        <div class="lang-row"><span class="lang-n">German</span><span class="lang-lv lv-l">Limited Working</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOBAL -->
+  <section id="global" class="sec">
+    <div class="s-label"><span class="s-num">05</span>Global Programmes</div>
+    <h2 class="s-title">International <em>experience</em></h2>
+    <div class="global-list fi">
+      <div class="gc">
+        <div>
+          <div class="gc-loc">Madrid, Spain</div>
+          <div class="gc-type">Workshop</div>
+        </div>
+        <div>
+          <div class="gc-title">Generative AI Workshop — GDSC, Universidad Politécnica de Madrid</div>
+          <div class="gc-desc">Explored Google Vertex AI for LLMs, attended hands-on demos, and engaged with the international tech community.</div>
+        </div>
+      </div>
+      <div class="gc">
+        <div>
+          <div class="gc-loc">Vermont, USA</div>
+          <div class="gc-type">Leadership Programme</div>
+        </div>
+        <div>
+          <div class="gc-title">Azerbaijan Youth Environmental Programme</div>
+          <div class="gc-desc">Selected as <strong>one of 10 from 500+ applicants</strong> for an intensive 14-day environmental leadership programme in the United States.</div>
+        </div>
+      </div>
+      <div class="gc">
+        <div>
+          <div class="gc-loc">Georgia</div>
+          <div class="gc-type">Summer School</div>
+        </div>
+        <div>
+          <div class="gc-title">European Summer School Camp</div>
+          <div class="gc-desc">Built a global perspective through cultural immersion with youth from across Europe. Cross-cultural collaboration workshops.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-wrap">
+      <div class="fi">
+        <div class="c-big">Let's<br>work<br><em>together.</em></div>
+        <p class="c-sub">Open to product management, data analytics, and business analyst roles. Based in Baku, with international exposure.</p>
+        <div class="btns" style="margin-top:0">
+          <a class="btn btn-fill" href="mailto:qasimov.adil28@gmail.com">Send an Email →</a>
+          <a class="btn btn-ghost" href="https://linkedin.com/in/AdilGasimov" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+      <div class="c-rows fi fi-d2">
+        <div class="c-row">
+          <div class="c-ico">✉</div>
+          <div><div class="c-type">Email</div><div class="c-val"><a href="mailto:qasimov.adil28@gmail.com">qasimov.adil28@gmail.com</a></div></div>
+        </div>
+        <div class="c-row">
+          <div class="c-ico">in</div>
+          <div><div class="c-type">LinkedIn</div><div class="c-val"><a href="https://linkedin.com/in/AdilGasimov" target="_blank">linkedin.com/in/AdilGasimov</a></div></div>
+        </div>
+        <div class="c-row">
+          <div class="c-ico">📍</div>
+          <div><div class="c-type">Location</div><div class="c-val">Baku, Azerbaijan</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<footer>
+  <span class="f-t">© 2025 Adil Gasimov</span>
+  <span class="f-t">Product · Data · Community</span>
+</footer>
+
+<script>
+// ── Burger toggle
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('nav-drawer');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  drawer.classList.toggle('open');
+  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+});
+drawer.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// ── Active nav highlight
+const allNavLinks = document.querySelectorAll('nav a, #nav-drawer a');
+document.querySelectorAll('section[id]').forEach(sec => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        allNavLinks.forEach(l => l.classList.remove('active'));
+        document.querySelectorAll(`a[href="#${e.target.id}"]`).forEach(l => l.classList.add('active'));
+      }
+    });
+  }, { rootMargin: '-35% 0px -60% 0px' }).observe(sec);
+});
+
+// ── Fade in on scroll
+document.querySelectorAll('.fi').forEach(el => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.06 }).observe(el);
+});
+</script>
+</body>
+</html>
